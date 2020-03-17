@@ -1,0 +1,72 @@
+{% load staticfiles %}
+{% if user.is_authenticated %}
+<div class="site-section bg-light">
+    <div class="container">
+      <div class="row mb-5" data-aos="fade-up">
+        <div class="col-md-12 text-center">
+          <h2 class="font-weight-bold text-black">Recent Podcasts</h2>
+        </div>
+      </div>
+      {% if object_list %}
+        {% for podcast in object_list %}
+        <div class="d-block d-md-flex podcast-entry bg-white mb-5" data-aos="fade-up">
+          <div class="text">
+            <h3 class="font-weight-light"><a href="{% url 'detail' pk=podcast.pk %}">{{podcast.title}}</a></h3>
+            <div class="text-white mb-3"><span class="text-black-opacity-05"><small>By  {{ podcast.rj_name }}<span class="sep">/</span> {{ podcast.created_at }}</small></span></div>
+            <p class="mb-4">{{ podcast.description }}</p>
+            <p><a href="{% url 'detail' pk=podcast.pk %}" class="btn btn-primary btn-sm py-3 px-4 small">Play</a></p>
+          </div>
+        </div>
+        {% endfor %}
+      {% else %}
+      <div class="site-section bg-light">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-12 text-center mb-5" data-aos="fade-up">
+              <h2 class="display-4 mb-5 text-black">No Podcasts </h2>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endif %}
+    </div>
+  <div class="container" data-aos="fade-up">
+    <div class="row">
+      <div class="col-md-12 text-center">
+        <div class="site-block-27">
+              {% if is_paginated %}
+                <ul class="pagination">
+                  {% if page_obj.has_previous %}
+                    <li><a href="?page={{ page_obj.previous_page_number }}">&laquo;</a></li>
+                  {% else %}
+                    <li class="disabled"><span>&laquo;</span></li>
+                  {% endif %}
+                  {% for i in paginator.page_range %}
+                    {% if page_obj.number == i %}
+                      <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+                    {% else %}
+                      <li><a href="?page={{ i }}">{{ i }}</a></li>
+                    {% endif %}
+                  {% endfor %}
+                  {% if page_obj.has_next %}
+                    <li><a href="?page={{ page_obj.next_page_number }}">&raquo;</a></li>
+                  {% else %}
+                    <li class="disabled"><span>&raquo;</span></li>
+                  {% endif %}
+                </ul>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+  </div>
+{% else %}
+<div class="site-section bg-light">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12 text-center mb-5" data-aos="fade-up">
+          <h2 class="display-4 mb-5 text-black">Please Get Registered</h2>
+        </div>
+      </div>
+    </div>
+</div>
+{% endif %}
